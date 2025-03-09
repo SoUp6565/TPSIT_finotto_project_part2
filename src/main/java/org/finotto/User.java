@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    private String name;
+    private String username;
+    private String password;
     private BankAccount account;
     private Wallet wallet;
     private List<Investment> investments;
 
-    public User(String name) {
-        this.name = name;
-        this.account = new BankAccount(name);
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.account = new BankAccount(username);
         this.wallet = new Wallet();
         this.investments = new ArrayList<>();
     }
@@ -53,6 +56,18 @@ public class User {
         } else {
             System.out.println("Fondi insufficienti per investire.");
         }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public boolean checkPassword(String password) {
+        return this.password.equals(password);
     }
 
     public void checkInvestments() {

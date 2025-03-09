@@ -4,8 +4,40 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        initialConfiguration();
+    }
+
+    public static void initialConfiguration(){
         Scanner scanner = new Scanner(System.in);
-        User user = new User("Mirko Pavan");
+        UserManager userManager = new UserManager();
+        User loggedInUser = null;
+
+        while (loggedInUser == null) {
+            System.out.println("1. Registrati");
+            System.out.println("2. Accedi");
+            System.out.print("Scegli un'opzione: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            System.out.print("Inserisci username: ");
+            String username = scanner.nextLine();
+            System.out.print("Inserisci password: ");
+            String password = scanner.nextLine();
+
+            if (choice == 1) {
+                userManager.registerUser(username, password);
+            } else if (choice == 2) {
+                loggedInUser = userManager.authenticate(username, password);
+            }
+        }
+
+        System.out.println("Benvenuto, " + loggedInUser.getUsername() + "!");
+        userPrompt(loggedInUser.getUsername(), loggedInUser.getPassword());
+    }
+
+    public static void userPrompt(String username, String password) {
+        Scanner scanner = new Scanner(System.in);
+        User user = new User(username, password);
 
         boolean run = true;
 
@@ -53,9 +85,7 @@ public class Main {
                     break;
             }
         }
-        scanner.close();
     }
-
     public static void showMenu() {
         System.out.println("\n1. Aggiungi entrate mensili (eseguendo questo comando farai anche avanzare di un mese tutti i tuoi investimenti attivi)");
         System.out.println("2. Guarda il tuo wallet");
