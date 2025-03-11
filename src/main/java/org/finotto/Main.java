@@ -47,21 +47,29 @@ public class Main {
                 case 1:
                     user.addMonthlyIncome();
                     System.out.println("Entrate mensili aggiunte");
+                    helper.saveUserToFile(user, "add monthly income: ");
                     break;
                 case 2:
-                    System.out.println("Il tuo wallet contiene: " + user.getWallet());
+                    System.out.println("nel tuo conto corrente ci sono: " + user.getAccount());
+                    helper.saveUserToFile(user, "watch bank account: ");
                     break;
                 case 3:
+                    System.out.println("Il tuo wallet contiene: " + user.getWallet());
+                    helper.saveUserToFile(user, "watch wallet: ");
+                    break;
+                case 4:
                     System.out.print("Inserisci importo da depositare: ");
                     double depositAmount = scanner.nextDouble();
                     user.depositToAccount(depositAmount);
+                    helper.saveUserToFile(user, "deposit: ");
                     break;
-                case 4:
+                case 5:
                     System.out.print("Inserisci importo da prelevare: ");
                     double withdrawAmount = scanner.nextDouble();
                     user.withdrawFromAccount(withdrawAmount);
+                    helper.saveUserToFile(user, "withdraw: ");
                     break;
-                case 5:
+                case 6:
                     System.out.print("Inserisci importo da investire: ");
                     double investAmount = scanner.nextDouble();
                     System.out.print("Inserisci durata in mesi: ");
@@ -69,14 +77,16 @@ public class Main {
                     System.out.print("Inserisci livello di rischio (1-Basso, 2-Medio, 3-Alto): ");
                     int risk = scanner.nextInt();
                     user.invest(investAmount, duration, risk);
+                    helper.saveUserToFile(user, "create an investment: ");
                     break;
-                case 6:
+                case 7:
                     user.checkInvestments();
+                    helper.saveUserToFile(user, "check investment: ");
                     break;
                 case 0:
                     run = false;
-                    helper.finalSaver(user);
                     System.out.println("Uscita dal programma.");
+                    helper.saveUserToFile(user,"at the end of program: ");
                     break;
                 default:
                     System.out.println("Scelta non valida.");
@@ -87,11 +97,12 @@ public class Main {
 
     public static void showMenu() {
         System.out.println("\n1. Aggiungi entrate mensili");
-        System.out.println("2. Guarda il tuo wallet");
-        System.out.println("3. Deposita sul conto");
-        System.out.println("4. Preleva dal conto");
-        System.out.println("5. Effettua un investimento");
-        System.out.println("6. Controlla investimenti maturati");
+        System.out.println("2. Guarda il tuo conto bancario");
+        System.out.println("3. Guarda il tuo wallet");
+        System.out.println("4. Deposita sul conto");
+        System.out.println("5. Preleva dal conto");
+        System.out.println("6. Effettua un investimento");
+        System.out.println("7. Controlla investimenti maturati");
         System.out.println("0. Esci");
         System.out.print("Scegli un'opzione: ");
     }

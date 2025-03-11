@@ -28,23 +28,24 @@ public class User {
         this.investments = investments;
     }
 
-    public String toCSV() {
+    public String toCSV(String where) {
         StringBuilder sb = new StringBuilder();
-        sb.append(username).append(",").append(password).append(",").append(account.getBalance()).append(",").append(wallet.getCash());
+        sb.append(where).append(",").append(username).append(",").append(password).append(",").append(account.getBalance()).append(",").append(wallet.getCash());
         for (Investment inv : investments) {
             sb.append(",").append(inv.toCSV());
         }
+        sb.append("\n");
         return sb.toString();
     }
 
     public static User fromCSV(String csvLine) {
         String[] parts = csvLine.split(",");
-        String username = parts[0];
-        String password = parts[1];
-        double balance = Double.parseDouble(parts[2]);
-        double walletMoney = Double.parseDouble(parts[3]);
+        String username = parts[1];
+        String password = parts[2];
+        double balance = Double.parseDouble(parts[3]);
+        double walletMoney = Double.parseDouble(parts[4]);
         List<Investment> investments = new ArrayList<>();
-        for (int i = 4; i < parts.length; i += 4) {
+        for (int i = 5; i < parts.length; i += 4) {
             investments.add(Investment.fromCSV(parts[i] + "," + parts[i + 1] + "," + parts[i + 2] + "," + parts[i + 3]));
         }
         return new User(username, password, balance, walletMoney, investments);
@@ -71,6 +72,8 @@ public class User {
     public double getWallet() {
         return wallet.getCash();
     }
+
+    public double getAccount(){return account.getBalance();}
 
     public void addMonthlyIncome() {
         wallet.addMonthlyIncome();
@@ -112,5 +115,3 @@ public class User {
         }
     }
 }
-
-
