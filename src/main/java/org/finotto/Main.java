@@ -1,13 +1,13 @@
 package org.finotto;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
         initialConfiguration();
     }
 
-    public static void initialConfiguration(){
+    public static void initialConfiguration() {
         Scanner scanner = new Scanner(System.in);
         UserManager userManager = new UserManager();
         User loggedInUser = null;
@@ -32,27 +32,24 @@ public class Main {
         }
 
         System.out.println("Benvenuto, " + loggedInUser.getUsername() + "!");
-        userPrompt(loggedInUser.getUsername(), loggedInUser.getPassword());
+        userPrompt(loggedInUser);
     }
 
-    public static void userPrompt(String username, String password) {
+    public static void userPrompt(User user) {
         Scanner scanner = new Scanner(System.in);
-        User user = new User(username, password);
-
+        UserManager helper = new UserManager();
         boolean run = true;
 
         while (run) {
             showMenu();
-
             int scelta = scanner.nextInt();
-
             switch (scelta) {
                 case 1:
                     user.addMonthlyIncome();
                     System.out.println("Entrate mensili aggiunte");
                     break;
                 case 2:
-                    System.out.println("il tuo wallet contiene: "+user.getWallet());
+                    System.out.println("Il tuo wallet contiene: " + user.getWallet());
                     break;
                 case 3:
                     System.out.print("Inserisci importo da depositare: ");
@@ -78,6 +75,7 @@ public class Main {
                     break;
                 case 0:
                     run = false;
+                    helper.finalSaver(user);
                     System.out.println("Uscita dal programma.");
                     break;
                 default:
@@ -86,8 +84,9 @@ public class Main {
             }
         }
     }
+
     public static void showMenu() {
-        System.out.println("\n1. Aggiungi entrate mensili (eseguendo questo comando farai anche avanzare di un mese tutti i tuoi investimenti attivi)");
+        System.out.println("\n1. Aggiungi entrate mensili");
         System.out.println("2. Guarda il tuo wallet");
         System.out.println("3. Deposita sul conto");
         System.out.println("4. Preleva dal conto");

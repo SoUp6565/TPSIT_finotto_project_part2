@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 class UserManager {
     private final ArrayList<User> users;
-    private static final String FILE_NAME = "users.txt";
+    private static final String FILE_NAME = "users.csv";
 
     public UserManager() {
         users = new ArrayList<>();
-        downloadUsers();
+        loadUsers();
     }
 
     public void registerUser(String username, String password) {
@@ -18,7 +18,7 @@ class UserManager {
             return;
         }
         users.add(new User(username, password));
-        saveUsers();
+        InitialSaveUsers();
         System.out.println("Registrazione completata.");
     }
 
@@ -41,38 +41,50 @@ class UserManager {
         return null;
     }
 
-    private void saveUsers() {
+    public void InitialSaveUsers() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
             for (User user : users) {
-                writer.write(user.getUsername() + "," + user.getPassword() + "\n");
+                writer.write(user.toCSV() + "\n");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void downloadUsers() {
-        BufferedReader reader = null;
+    public void finalSaver(User user) {
+        File file = new File(FILE_NAME);
         try {
-            File file = new File(FILE_NAME);
-            if (!file.exists()) {
-                return; // Se il file non esiste, non facciamo nulla
-            }
-            reader = new BufferedReader(new FileReader(file));
-            String line;
-            while ((line = reader.readLine()) != null) {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line = reader.readLine();
+
+            while (line != null) {
                 String[] parts = line.split(",");
-                if (parts.length >= 2) {
-                    users.add(new User(parts[0], parts[1]));
+                if (parts[0].equals(user.getUsername())&&user.checkPassword(parts[1])){
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
+                        writer.write(user.toCSV());
+                    }catch (IOException e){
+                        throw new RuntimeException(e);
+                    }
                 }
+                line = reader.readLine();
             }
         } catch (IOException e) {
-            System.out.println("Errore durante il download degli utenti.");
+            throw new RuntimeException(e);
         }
-        if (reader != null) {
-            try {
-                reader.close();
-            } catch (IOException ignored) {}
+    }
+
+    private void loadUsers() {
+        File file = new File(FILE_NAME);
+        if (!file.exists()) return;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                User user = User.fromCSV(line);
+                users.add(user);
+            }
+        } catch (IOException e) {
+            System.out.println("Errore durante il caricamento degli utenti.");
         }
     }
 }

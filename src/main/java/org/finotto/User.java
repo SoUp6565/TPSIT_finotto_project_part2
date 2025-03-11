@@ -10,13 +10,44 @@ public class User {
     private Wallet wallet;
     private List<Investment> investments;
 
-
     public User(String username, String password) {
         this.username = username;
         this.password = password;
         this.account = new BankAccount(username);
         this.wallet = new Wallet();
         this.investments = new ArrayList<>();
+    }
+
+    public User(String username, String password, double balance, double walletMoney, List<Investment> investments) {
+        this.username = username;
+        this.password = password;
+        this.account = new BankAccount(username);
+        this.wallet = new Wallet();
+        this.wallet.setCash(walletMoney); // Adjust for initial wallet amount
+        this.account.deposit(balance);
+        this.investments = investments;
+    }
+
+    public String toCSV() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(username).append(",").append(password).append(",").append(account.getBalance()).append(",").append(wallet.getCash());
+        for (Investment inv : investments) {
+            sb.append(",").append(inv.toCSV());
+        }
+        return sb.toString();
+    }
+
+    public static User fromCSV(String csvLine) {
+        String[] parts = csvLine.split(",");
+        String username = parts[0];
+        String password = parts[1];
+        double balance = Double.parseDouble(parts[2]);
+        double walletMoney = Double.parseDouble(parts[3]);
+        List<Investment> investments = new ArrayList<>();
+        for (int i = 4; i < parts.length; i += 4) {
+            investments.add(Investment.fromCSV(parts[i] + "," + parts[i + 1] + "," + parts[i + 2] + "," + parts[i + 3]));
+        }
+        return new User(username, password, balance, walletMoney, investments);
     }
 
     public void depositToAccount(double amount) {
@@ -51,7 +82,7 @@ public class User {
     public void invest(double amount, int duration, int risk) {
         if (account.getBalance() >= amount) {
             account.withdraw(amount);
-            investments.add(new Investment(amount, duration, risk));
+            investments.add(new Investment(amount, duration, risk, 0));
             System.out.println("Investimento effettuato con successo.");
         } else {
             System.out.println("Fondi insufficienti per investire.");
@@ -60,10 +91,6 @@ public class User {
 
     public String getUsername() {
         return username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public boolean checkPassword(String password) {
@@ -79,8 +106,8 @@ public class User {
                 account.deposit(returnedAmount);
                 investments.remove(i);
                 i--;
-            }else {
-                System.out.println("l' investimento non è ancora maturato");
+            } else {
+                System.out.println("L'investimento non è ancora maturato");
             }
         }
     }
