@@ -1,6 +1,8 @@
 package org.finotto;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 class UserManager {
     private static final String DIRECTORY_NAME = "usersData";
@@ -49,7 +51,6 @@ class UserManager {
             writer.write(user.toCSV(where));
         } catch (IOException e) {
             System.out.println("Errore nel salvataggio dell'utente.");
-            e.printStackTrace();
         }
     }
 
@@ -66,7 +67,41 @@ class UserManager {
             return  User.fromCSV(helper);
         } catch (IOException e) {
             System.out.println("Errore durante il caricamento dell'utente.");
-            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getHystory(String username){
+        File userFile = new File(DIRECTORY_NAME + "/" + username + ".csv");
+        if (!userFile.exists()) return null;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(userFile))) {
+            String line;
+            StringBuilder text = new StringBuilder();
+
+            while ((line = reader.readLine())!= null){
+                String[] parts = line.split(",");
+                String helperUsername = parts[1];
+                String password = parts[2];
+                double balance = Double.parseDouble(parts[3]);
+                double walletMoney = Double.parseDouble(parts[4]);
+                List<Investment> investments = new ArrayList<>();
+                for (int i = 5; i < parts.length; i += 4) {
+                    investments.add(Investment.fromCSV(parts[i] + "," + parts[i + 1] + "," + parts[i + 2] + "," + parts[i + 3]));
+                }
+                text.append("MOMENT: ").append(parts[0]).append("  ").append("USERNAME: ").append(helperUsername).append("  ")
+                        .append("PASSWORD: ").append(password).append("  ")
+                        .append("BALANCE: ").append(balance).append("  ")
+                        .append("WALLET: ").append(walletMoney).append("  ");
+                for (Investment i:investments){
+                    text.append(i.getInformationForHystory());
+                }
+                text.append("\n");
+            }
+
+            return text.toString();
+        } catch (IOException e) {
+            System.out.println("Errore durante il caricamento dell'utente.");
         }
         return null;
     }

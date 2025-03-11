@@ -37,7 +37,7 @@ public class Main {
 
     public static void userPrompt(User user) {
         Scanner scanner = new Scanner(System.in);
-        UserManager helper = new UserManager();
+        UserManager userManager = new UserManager();
         boolean run = true;
 
         while (run) {
@@ -47,27 +47,27 @@ public class Main {
                 case 1:
                     user.addMonthlyIncome();
                     System.out.println("Entrate mensili aggiunte");
-                    helper.saveUserToFile(user, "add monthly income: ");
+                    userManager.saveUserToFile(user, "add monthly income: ");
                     break;
                 case 2:
                     System.out.println("nel tuo conto corrente ci sono: " + user.getAccount());
-                    helper.saveUserToFile(user, "watch bank account: ");
+                    userManager.saveUserToFile(user, "watch bank account: ");
                     break;
                 case 3:
                     System.out.println("Il tuo wallet contiene: " + user.getWallet());
-                    helper.saveUserToFile(user, "watch wallet: ");
+                    userManager.saveUserToFile(user, "watch wallet: ");
                     break;
                 case 4:
                     System.out.print("Inserisci importo da depositare: ");
                     double depositAmount = scanner.nextDouble();
                     user.depositToAccount(depositAmount);
-                    helper.saveUserToFile(user, "deposit: ");
+                    userManager.saveUserToFile(user, "deposit: ");
                     break;
                 case 5:
                     System.out.print("Inserisci importo da prelevare: ");
                     double withdrawAmount = scanner.nextDouble();
                     user.withdrawFromAccount(withdrawAmount);
-                    helper.saveUserToFile(user, "withdraw: ");
+                    userManager.saveUserToFile(user, "withdraw: ");
                     break;
                 case 6:
                     System.out.print("Inserisci importo da investire: ");
@@ -77,16 +77,20 @@ public class Main {
                     System.out.print("Inserisci livello di rischio (1-Basso, 2-Medio, 3-Alto): ");
                     int risk = scanner.nextInt();
                     user.invest(investAmount, duration, risk);
-                    helper.saveUserToFile(user, "create an investment: ");
+                    userManager.saveUserToFile(user, "create an investment: ");
                     break;
                 case 7:
                     user.checkInvestments();
-                    helper.saveUserToFile(user, "check investment: ");
+                    userManager.saveUserToFile(user, "check investment: ");
+                    break;
+                case 8:
+                    userManager.saveUserToFile(user, "hystory: ");
+                    System.out.println(userManager.getHystory(user.getUsername()));
                     break;
                 case 0:
                     run = false;
                     System.out.println("Uscita dal programma.");
-                    helper.saveUserToFile(user,"at the end of program: ");
+                    userManager.saveUserToFile(user,"at the end of program: ");
                     break;
                 default:
                     System.out.println("Scelta non valida.");
@@ -103,6 +107,7 @@ public class Main {
         System.out.println("5. Preleva dal conto");
         System.out.println("6. Effettua un investimento");
         System.out.println("7. Controlla investimenti maturati");
+        System.out.println("8. Controlla il tuo storico delle transazioni");
         System.out.println("0. Esci");
         System.out.print("Scegli un'opzione: ");
     }

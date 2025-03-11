@@ -15,6 +15,13 @@ public class Investment {
         this.elapsedMonths = elapsedMonths;
     }
 
+    public String getInformationForHystory(){
+        return "INVESTMENT-AMOUNT: " + amount + "  "
+                +"INVESTMENT-DURATION: " + duration + "  "
+                +"INVESTMENT-RISK: " + risk + "  "
+                + "INVESTMENT-ELAPSED-MONTHS: " + elapsedMonths + "  ";
+    }
+
     public void advanceTime(int months) {
         this.elapsedMonths += months;
     }
