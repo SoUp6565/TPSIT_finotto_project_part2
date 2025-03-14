@@ -38,6 +38,7 @@ public class Main {
     public static void userPrompt(User user) {
         Scanner scanner = new Scanner(System.in);
         UserManager userManager = new UserManager();
+        BankPlotter plotter = new BankPlotter();
         boolean run = true;
 
         while (run) {
@@ -48,6 +49,7 @@ public class Main {
                     user.addMonthlyIncome();
                     System.out.println("Entrate mensili aggiunte");
                     userManager.saveUserToFile(user, "add monthly income: ");
+                    plotter.AddMonthDate(user);
                     break;
                 case 2:
                     System.out.println("nel tuo conto corrente ci sono: " + user.getAccount());
@@ -62,12 +64,14 @@ public class Main {
                     double depositAmount = scanner.nextDouble();
                     user.depositToAccount(depositAmount);
                     userManager.saveUserToFile(user, "deposit: ");
+                    plotter.saveUserToBankPlotter(user);
                     break;
                 case 5:
                     System.out.print("Inserisci importo da prelevare: ");
                     double withdrawAmount = scanner.nextDouble();
                     user.withdrawFromAccount(withdrawAmount);
                     userManager.saveUserToFile(user, "withdraw: ");
+                    plotter.saveUserToBankPlotter(user);
                     break;
                 case 6:
                     System.out.print("Inserisci importo da investire: ");
@@ -78,10 +82,12 @@ public class Main {
                     int risk = scanner.nextInt();
                     user.invest(investAmount, duration, risk);
                     userManager.saveUserToFile(user, "create an investment: ");
+                    plotter.saveUserToBankPlotter(user);
                     break;
                 case 7:
                     user.checkInvestments();
                     userManager.saveUserToFile(user, "check investment: ");
+                    plotter.saveUserToBankPlotter(user);
                     break;
                 case 8:
                     System.out.println(userManager.getHystory(user.getUsername()));
@@ -90,6 +96,7 @@ public class Main {
                     run = false;
                     System.out.println("Uscita dal programma.");
                     userManager.saveUserToFile(user,"at the end of program: ");
+                    plotter.saveUserToBankPlotter(user);
                     break;
                 default:
                     System.out.println("Scelta non valida.");

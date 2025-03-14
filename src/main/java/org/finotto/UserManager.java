@@ -27,6 +27,8 @@ class UserManager {
 
         User newUser = new User(username, password);
         saveUserToFile(newUser, "at registration: ");
+        BankPlotter plotter = new BankPlotter();
+        plotter.registerUserForPlotter(username,password);
         System.out.println("Registrazione completata.");
     }
 

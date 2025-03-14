@@ -75,7 +75,9 @@ public class User {
         return wallet.getCash();
     }
 
-    public double getAccount(){return account.getBalance();}
+    public double getAccount(){
+        return account.getBalance();
+    }
 
     public void addMonthlyIncome() {
         wallet.addMonthlyIncome();
