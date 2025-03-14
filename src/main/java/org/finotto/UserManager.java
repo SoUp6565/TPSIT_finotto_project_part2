@@ -81,16 +81,13 @@ class UserManager {
 
             while ((line = reader.readLine())!= null){
                 String[] parts = line.split(",");
-                String helperUsername = parts[1];
-                String password = parts[2];
                 double balance = Double.parseDouble(parts[3]);
                 double walletMoney = Double.parseDouble(parts[4]);
                 List<Investment> investments = new ArrayList<>();
                 for (int i = 5; i < parts.length; i += 4) {
                     investments.add(Investment.fromCSV(parts[i] + "," + parts[i + 1] + "," + parts[i + 2] + "," + parts[i + 3]));
                 }
-                text.append("MOMENT: ").append(parts[0]).append("  ").append("USERNAME: ").append(helperUsername).append("  ")
-                        .append("PASSWORD: ").append(password).append("  ")
+                text.append("MOMENT: ").append(parts[0]).append("  ")
                         .append("BALANCE: ").append(balance).append("  ")
                         .append("WALLET: ").append(walletMoney).append("  ");
                 for (Investment i:investments){

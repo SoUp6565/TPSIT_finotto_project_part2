@@ -13,7 +13,7 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.account = new BankAccount(username);
+        this.account = new BankAccount();
         this.wallet = new Wallet();
         this.investments = new ArrayList<>();
     }
@@ -21,9 +21,9 @@ public class User {
     public User(String username, String password, double balance, double walletMoney, List<Investment> investments) {
         this.username = username;
         this.password = password;
-        this.account = new BankAccount(username);
+        this.account = new BankAccount();
         this.wallet = new Wallet();
-        this.wallet.setCash(walletMoney); // Adjust for initial wallet amount
+        this.wallet.setCash(walletMoney);
         this.account.deposit(balance);
         this.investments = investments;
     }
@@ -51,21 +51,23 @@ public class User {
         return new User(username, password, balance, walletMoney, investments);
     }
 
-    public void depositToAccount(double amount) {
+    public boolean depositToAccount(double amount) {
         if (wallet.getCash() >= amount) {
             wallet.spend(amount);
-            account.deposit(amount);
+            return account.deposit(amount);
         } else {
             System.out.println("Non hai abbastanza denaro nel portafoglio");
+            return false;
         }
     }
 
-    public void withdrawFromAccount(double amount) {
+    public boolean withdrawFromAccount(double amount) {
         if (amount <= account.getBalance()) {
-            account.withdraw(amount);
             wallet.addCash(amount);
+            return account.withdraw(amount);
         } else {
             System.out.println("Saldo insufficiente nel conto");
+            return false;
         }
     }
 
@@ -82,18 +84,24 @@ public class User {
         }
     }
 
-    public void invest(double amount, int duration, int risk) {
-        if (account.getBalance() >= amount) {
+    public boolean invest(double amount, int duration, int risk) {
+        if (account.getBalance() >= amount && amount>0) {
             account.withdraw(amount);
             investments.add(new Investment(amount, duration, risk, 0));
             System.out.println("Investimento effettuato con successo.");
+            return true;
         } else {
-            System.out.println("Fondi insufficienti per investire.");
+            System.out.println("Fondi insufficienti per investire o investimento nullo");
+            return false;
         }
     }
 
     public String getUsername() {
         return username;
+    }
+
+    public List<Investment> getInvestments(){
+        return investments;
     }
 
     public boolean checkPassword(String password) {

@@ -84,7 +84,6 @@ public class Main {
                     userManager.saveUserToFile(user, "check investment: ");
                     break;
                 case 8:
-                    userManager.saveUserToFile(user, "hystory: ");
                     System.out.println(userManager.getHystory(user.getUsername()));
                     break;
                 case 0:
@@ -100,7 +99,7 @@ public class Main {
     }
 
     public static void showMenu() {
-        System.out.println("\n1. Aggiungi entrate mensili");
+        System.out.println("\n1. Aggiungi entrate mensili(usando questo comando farai anche avanzare tutti i tuoi investimenti di un mese)");
         System.out.println("2. Guarda il tuo conto bancario");
         System.out.println("3. Guarda il tuo wallet");
         System.out.println("4. Deposita sul conto");
