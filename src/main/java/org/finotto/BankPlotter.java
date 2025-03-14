@@ -25,7 +25,7 @@ public class BankPlotter {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String dataFormat = date.format(formatter);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(DIRECTORY_NAME + "/" + user.getUsername() + "BankPlotter" + ".csv", true))) {
-            writer.write(dataFormat+";"+user.getAccount()+";"+user.getWallet()+"\n");
+            writer.write(dataFormat+";"+(int)(user.getAccount())+";"+(int)(user.getWallet())+"\n");
         } catch (IOException e) {
             System.out.println("Errore nel salvataggio dell'utente.");
         }
