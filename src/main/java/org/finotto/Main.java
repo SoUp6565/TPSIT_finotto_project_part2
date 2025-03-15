@@ -39,6 +39,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         UserManager userManager = new UserManager();
         BankPlotter plotter = new BankPlotter();
+        plotter.setUp(user);
         boolean run = true;
 
         while (run) {
