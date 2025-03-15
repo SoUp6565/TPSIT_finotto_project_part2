@@ -14,7 +14,9 @@ class UserManager {
     private void createUsersDirectory() {
         File dir = new File(DIRECTORY_NAME);
         if (!dir.exists()) {
-            dir.mkdir();
+            if (!dir.mkdir()) {
+                System.out.println("Attenzione: impossibile creare la cartella utenti.");
+            }
         }
     }
 

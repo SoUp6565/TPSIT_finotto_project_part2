@@ -31,7 +31,7 @@ public class Main {
             }
         }
 
-        System.out.println("Benvenuto, " + loggedInUser.getUsername() + "!");
+        System.out.println("Benvenuto/a, " + loggedInUser.getUsername() + "!");
         userPrompt(loggedInUser);
     }
 

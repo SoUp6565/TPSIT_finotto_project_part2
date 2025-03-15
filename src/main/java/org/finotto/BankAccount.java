@@ -9,7 +9,6 @@ public class BankAccount {
 
     public boolean deposit(double amount) {
         if (amount <= 0) {
-            System.out.println("Errore: Non puoi depositare un importo negativo o nullo");
             return false;
         }
         if (balance < 0) {

@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    private String username;
-    private String password;
-    private BankAccount account;
-    private Wallet wallet;
-    private List<Investment> investments;
+    private final String username;
+    private final String password;
+    private final BankAccount account;
+    private final Wallet wallet;
+    private final List<Investment> investments;
 
     public User(String username, String password) {
         this.username = username;
@@ -87,7 +87,7 @@ public class User {
     }
 
     public boolean invest(double amount, int duration, int risk) {
-        if (account.getBalance() >= amount && amount>0) {
+        if (account.getBalance() >= amount && amount>0 && duration >=1 && risk >=1 &&risk <=3) {
             account.withdraw(amount);
             investments.add(new Investment(amount, duration, risk, 0));
             System.out.println("Investimento effettuato con successo.");

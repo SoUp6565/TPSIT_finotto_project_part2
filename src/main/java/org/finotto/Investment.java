@@ -3,10 +3,10 @@ package org.finotto;
 import java.util.Random;
 
 public class Investment {
-    private double amount;
-    private int duration;
+    private final double amount;
+    private final int duration;
     private int elapsedMonths;
-    private int risk;
+    private final int risk;
 
     public Investment(double amount, int duration, int risk, int elapsedMonths) {
         this.amount = amount;

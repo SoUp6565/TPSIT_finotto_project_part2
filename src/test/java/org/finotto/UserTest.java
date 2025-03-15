@@ -34,6 +34,15 @@ class UserTest {
         assertFalse(user.depositToAccount(200));
     }
 
+    @Test
+    void depositToAccountNegativeNumberShouldNotChangeBalance() {
+        double initialBalance = user.getAccount();
+        user.depositToAccount(-100);
+        assertEquals(initialBalance, user.getAccount());
+    }
+
+
+
     //TEST WITHDRAW
     @Test
     void withdrawFromAccountGeneral() {
@@ -58,6 +67,25 @@ class UserTest {
         user.depositToAccount(100);
         assertFalse(user.withdrawFromAccount(200));
     }
+
+    @Test
+    void withdrawFromAccountMoreThanBalanceShouldNotChangeBalance() {
+        user.depositToAccount(100);
+        double balanceBefore = user.getAccount();
+        user.withdrawFromAccount(200);
+        assertEquals(balanceBefore, user.getAccount());
+    }
+
+    @Test
+    void multipleDepositsAndWithdrawals() {
+        user.depositToAccount(50);
+        user.depositToAccount(50);
+        user.withdrawFromAccount(30);
+        assertEquals(70, user.getAccount());
+    }
+
+
+
 
     //TEST INVESTMENT
     @Test
@@ -127,5 +155,18 @@ class UserTest {
         user.depositToAccount(100);
         assertFalse(user.invest(200, 10, (int)((Math.random()*3)+1)));
     }
+
+    @Test
+    void investZeroDaysShouldFail() {
+        user.depositToAccount(100);
+        assertFalse(user.invest(50, 0, 1));
+    }
+
+    @Test
+    void investInvalidRiskLevelShouldFail() {
+        user.depositToAccount(100);
+        assertFalse(user.invest(50, 10, 4)); // Rischio fuori dal range
+    }
+
 
 }

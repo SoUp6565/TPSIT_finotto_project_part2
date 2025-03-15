@@ -10,21 +10,17 @@ public class BankPlotter {
 
     public void setUp(User user){
         File userFile = new File(DIRECTORY_NAME + "/" + user.getUsername() + "BankPlotter" + ".csv");
-        if (!userFile.exists()){
-            //il file non esite non è stato ancora creato
-        }else {
-            try (BufferedReader reader = new BufferedReader(new FileReader(userFile))) {
-                String line;
-                String helper = "";
-                while ((line = reader.readLine())!= null){
-                    helper = line;
-                }
-                String[] parts = helper.split(";");
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                date = LocalDateTime.parse(parts[0], formatter);
-            } catch (IOException e) {
-                System.out.println("Errore durante il caricamento del BankPlotter.");
+        try (BufferedReader reader = new BufferedReader(new FileReader(userFile))) {
+            String line;
+            String helper = "";
+            while ((line = reader.readLine())!= null){
+                helper = line;
             }
+            String[] parts = helper.split(";");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            date = LocalDateTime.parse(parts[0], formatter);
+        } catch (IOException e) {
+            System.out.println("Errore durante il caricamento del BankPlotter.");
         }
     }
 
